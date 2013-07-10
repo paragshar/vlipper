@@ -15,6 +15,7 @@ class UsersController extends AppController{
 		}
 		if ($this->Auth->login()) {
 			$user = $this->Auth->user();
+			unset($user['password_unencrypt']);
 			if(!empty($this->data['User']['remember_me'])){
 				setcookie('CakeCookie[User][id]', $this->_encrypt($this->Auth->user('id')), strtotime('+30 days', time()), '/','', false, false);
 			}
@@ -26,8 +27,11 @@ class UsersController extends AppController{
 	
 	function add(){
 		if(!empty($this->request->data)){
-			if(empty($this->data['User']['password']))
-				$this->request->data['User']['password'] = Security::hash(Configure::read('Security.salt').rand());
+			if(empty($this->data['User']['password'])){
+				$rand_pass = rand();
+				$this->request->data['User']['password_unencrypt'] = $rand_pass;
+				$this->request->data['User']['password'] = Security::hash(Configure::read('Security.salt').$rand_pass);
+			}
 			else
 				$this->request->data['User']['password'] = Security::hash(Configure::read('Security.salt').$this->data['User']['password']);
 			
@@ -62,7 +66,8 @@ class UsersController extends AppController{
 				array_push($associates, $sender_id);
 			}
 		}
-		$this->output = $associates;
+		$associate_info = $this->User->find('all', array('conditions'=>array('id'=>$associates), 'fields'=>array('User.name', 'User.email', 'User.id'), 'recursive'=>-1));
+		$this->output = $associate_info;
 	}
 	
 	function friends($search = ''){

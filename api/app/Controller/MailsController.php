@@ -16,8 +16,21 @@ class MailsController extends AppController{
 		$mails = $this->Mail->find('all', array('fields'=>$fields, 'conditions'=>array('Recipient.id'=>$user_id, 'deleted_for_recipient !='=>1), 'recursive'=>0, 'order'=>'Mail.created DESC'));
 		$this->output = $mails;
 	}
+
+	function conversations($id){
+		$user = $this->Auth->user();
+		$user_id = empty($user['User']) ? $user['id'] : $user['User']['id'];
+		$fields = array('Mail.id', 'Mail.created', 'Sender.name', 'Sender.id', 'Sender.email');
+		$mails = $this->Mail->find('all', array('fields'=>$fields, 'conditions'=>array('OR'=>array(
+																								array('Recipient.id'=>$user_id, 'Sender_id'=>$id), 
+																								array('Recipient.id'=>$id, 'Sender_id'=>$user_id)
+																								),
+																								'deleted_for_recipient !='=>1), 'recursive'=>0, 'order'=>'Mail.created DESC'));
+		$this->output = $mails;
+
+	}
 	
-	function sent_mails(){
+	function sent_mails(){	
 		$user = $this->Auth->user();
 		$user_id = empty($user['User']) ? $user['id'] : $user['User']['id'];
 		$fields = array('Mail.*', 'Recipient.name', 'Recipient.id');
