@@ -27,7 +27,7 @@ class UsersController extends AppController{
 	function add(){
 		if(!empty($this->request->data)){
 			if(empty($this->data['User']['password']))
-				$this->data['User']['password']) = rand();
+				$this->data['User']['password'] = rand();
 			$this->request->data['User']['password'] = Security::hash(Configure::read('Security.salt').$this->data['User']['password']);
 			if($this->User->save($this->request->data)){
 				$this->output = "success";
