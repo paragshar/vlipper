@@ -16,16 +16,16 @@ PricePlaningSection.prototype = {
 			$originTitleMarginTop = 50,
 			$originTitleFontSize = 50,
 			$originTitleMarginBottom = 38,
-			$originContentHeight = 770,
+			$originContentHeight = 710,
 			$originRibbonHeight = 85,
 			$originFontSize = 22,
 			$originRibbonMarginBottom = 40,
 			$originPlanWidth = 442,
-			$originPlanHeight = 472,
+			$originPlanHeight = 350,
 			$originPlanPriceFontSize = 32,
 			$originPlanPricePeriodFontSize = 62,
 			$originPlanDescFontSize = 13,
-			$originTrustHeight = 200,
+			$originTrustHeight = 270,
 			$sectionHeight = $height - $($('div').filter('#header')[0]).height() - 10,
 			$curSectionRatio = $sectionHeight / $originHeight;
 
@@ -89,7 +89,7 @@ PricePlaningSection.prototype = {
 
 		$($('#pricingPlanes .content .pricing-container .box .gold')[0]).css({
 					'width': $originPlanWidth * $curSectionRatio + 'px',
-					'height': $originPlanHeight * $curSectionRatio + 'px'
+					'height': $originPlanHeight * $curSectionRatio+ 'px'
 				});
 
 		$($('#pricingPlanes .content .pricing-container .box .gold .gold-title')[0]).css({
